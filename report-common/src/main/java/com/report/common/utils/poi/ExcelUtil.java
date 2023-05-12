@@ -2,7 +2,7 @@ package com.report.common.utils.poi;
 
 import com.report.common.annotation.Excel;
 import com.report.common.annotation.Excels;
-import com.report.common.config.RuoYiConfig;
+import com.report.common.config.ReportConfig;
 import com.report.common.core.domain.AjaxResult;
 import com.report.common.core.text.Convert;
 import com.report.common.exception.UtilException;
@@ -1297,7 +1297,7 @@ public class ExcelUtil<T>
      */
     public String getAbsoluteFile(String filename)
     {
-        String downloadPath = RuoYiConfig.getDownloadPath() + filename;
+        String downloadPath = ReportConfig.getDownloadPath() + filename;
         File desc = new File(downloadPath);
         if (!desc.getParentFile().exists())
         {

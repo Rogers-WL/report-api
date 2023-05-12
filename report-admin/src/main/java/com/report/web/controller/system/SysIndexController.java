@@ -1,6 +1,6 @@
 package com.report.web.controller.system;
 
-import com.report.common.config.RuoYiConfig;
+import com.report.common.config.ReportConfig;
 import com.report.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ public class SysIndexController
 {
     /** 系统基础配置 */
     @Autowired
-    private RuoYiConfig ruoyiConfig;
+    private ReportConfig ruoyiConfig;
 
     /**
      * 访问首页，提示语

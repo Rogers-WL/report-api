@@ -1,6 +1,6 @@
 package com.report.common.utils.file;
 
-import com.report.common.config.RuoYiConfig;
+import com.report.common.config.ReportConfig;
 import com.report.common.constant.Constants;
 import com.report.common.exception.file.FileNameLengthLimitExceededException;
 import com.report.common.exception.file.FileSizeLimitExceededException;
@@ -36,7 +36,7 @@ public class FileUploadUtils
     /**
      * 默认上传的地址
      */
-    private static String defaultBaseDir = RuoYiConfig.getProfile();
+    private static String defaultBaseDir = ReportConfig.getProfile();
 
     public static void setDefaultBaseDir(String defaultBaseDir)
     {
@@ -143,7 +143,7 @@ public class FileUploadUtils
 
     public static final String getPathFileName(String uploadDir, String fileName) throws IOException
     {
-        int dirLastIndex = RuoYiConfig.getProfile().length() + 1;
+        int dirLastIndex = ReportConfig.getProfile().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
         return Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
     }

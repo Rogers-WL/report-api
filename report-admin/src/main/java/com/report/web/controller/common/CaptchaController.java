@@ -1,7 +1,7 @@
 package com.report.web.controller.common;
 
 import com.google.code.kaptcha.Producer;
-import com.report.common.config.RuoYiConfig;
+import com.report.common.config.ReportConfig;
 import com.report.common.constant.CacheConstants;
 import com.report.common.constant.Constants;
 import com.report.common.core.domain.AjaxResult;
@@ -62,7 +62,7 @@ public class CaptchaController
         BufferedImage image = null;
 
         // 生成验证码
-        String captchaType = RuoYiConfig.getCaptchaType();
+        String captchaType = ReportConfig.getCaptchaType();
         if ("math".equals(captchaType))
         {
             String capText = captchaProducerMath.createText();

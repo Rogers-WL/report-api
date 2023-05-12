@@ -1,7 +1,7 @@
 package com.report.web.controller.system;
 
 import com.report.common.annotation.Log;
-import com.report.common.config.RuoYiConfig;
+import com.report.common.config.ReportConfig;
 import com.report.common.core.controller.BaseController;
 import com.report.common.core.domain.AjaxResult;
 import com.report.common.core.domain.entity.SysUser;
@@ -119,7 +119,7 @@ public class SysProfileController extends BaseController
         if (!file.isEmpty())
         {
             LoginUser loginUser = getLoginUser();
-            String avatar = FileUploadUtils.upload(RuoYiConfig.getAvatarPath(), file, MimeTypeUtils.IMAGE_EXTENSION);
+            String avatar = FileUploadUtils.upload(ReportConfig.getAvatarPath(), file, MimeTypeUtils.IMAGE_EXTENSION);
             if (userService.updateUserAvatar(loginUser.getUsername(), avatar))
             {
                 AjaxResult ajax = AjaxResult.success();

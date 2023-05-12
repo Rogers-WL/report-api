@@ -1,6 +1,6 @@
 package com.report.common.utils.file;
 
-import com.report.common.config.RuoYiConfig;
+import com.report.common.config.ReportConfig;
 import com.report.common.utils.DateUtils;
 import com.report.common.utils.StringUtils;
 import com.report.common.utils.uuid.IdUtils;
@@ -68,7 +68,7 @@ public class FileUtils
      */
     public static String writeImportBytes(byte[] data) throws IOException
     {
-        return writeBytes(data, RuoYiConfig.getImportPath());
+        return writeBytes(data, ReportConfig.getImportPath());
     }
 
     /**

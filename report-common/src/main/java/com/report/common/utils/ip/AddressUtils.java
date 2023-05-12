@@ -2,7 +2,7 @@ package com.report.common.utils.ip;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.report.common.config.RuoYiConfig;
+import com.report.common.config.ReportConfig;
 import com.report.common.constant.Constants;
 import com.report.common.utils.StringUtils;
 import com.report.common.utils.http.HttpUtils;
@@ -31,7 +31,7 @@ public class AddressUtils
         {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled())
+        if (ReportConfig.isAddressEnabled())
         {
             try
             {
