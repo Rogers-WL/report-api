@@ -1,15 +1,16 @@
 package com.report;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 /**
  * 启动程序
  *
  * @author rogers
  */
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@MapperScan(value = {"com.report.**.mapper"})
+@SpringBootApplication(scanBasePackages = {"com.report"})
 public class RuoYiApplication {
     public static void main(String[] args) {
         SpringApplication.run(RuoYiApplication.class, args);
