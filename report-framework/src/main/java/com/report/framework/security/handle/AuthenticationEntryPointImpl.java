@@ -2,7 +2,7 @@ package com.report.framework.security.handle;
 
 import com.alibaba.fastjson2.JSON;
 import com.report.common.constant.HttpStatus;
-import com.report.common.core.domain.AjaxResult;
+import com.report.common.core.domain.R;
 import com.report.common.utils.ServletUtils;
 import com.report.common.utils.StringUtils;
 import org.springframework.security.core.AuthenticationException;
@@ -30,6 +30,6 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint, S
     {
         int code = HttpStatus.UNAUTHORIZED;
         String msg = StringUtils.format("请求访问：{}，认证失败，无法访问系统资源", request.getRequestURI());
-        ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.error(code, msg)));
+        ServletUtils.renderString(response, JSON.toJSONString(R.error(code, msg)));
     }
 }

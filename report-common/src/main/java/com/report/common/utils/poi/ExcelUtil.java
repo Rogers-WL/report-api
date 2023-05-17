@@ -3,7 +3,7 @@ package com.report.common.utils.poi;
 import com.report.common.annotation.Excel;
 import com.report.common.annotation.Excels;
 import com.report.common.config.ReportConfig;
-import com.report.common.core.domain.AjaxResult;
+import com.report.common.core.domain.R;
 import com.report.common.core.text.Convert;
 import com.report.common.exception.UtilException;
 import com.report.common.utils.DateUtils;
@@ -447,7 +447,7 @@ public class ExcelUtil<T>
      * @param sheetName 工作表的名称
      * @return 结果
      */
-    public AjaxResult exportExcel(List<T> list, String sheetName)
+    public R exportExcel(List<T> list, String sheetName)
     {
         return exportExcel(list, sheetName, StringUtils.EMPTY);
     }
@@ -460,7 +460,7 @@ public class ExcelUtil<T>
      * @param title 标题
      * @return 结果
      */
-    public AjaxResult exportExcel(List<T> list, String sheetName, String title)
+    public R exportExcel(List<T> list, String sheetName, String title)
     {
         this.init(list, sheetName, title, Excel.Type.EXPORT);
         return exportExcel();
@@ -502,7 +502,7 @@ public class ExcelUtil<T>
      * @param sheetName 工作表的名称
      * @return 结果
      */
-    public AjaxResult importTemplateExcel(String sheetName)
+    public R importTemplateExcel(String sheetName)
     {
         return importTemplateExcel(sheetName, StringUtils.EMPTY);
     }
@@ -514,7 +514,7 @@ public class ExcelUtil<T>
      * @param title 标题
      * @return 结果
      */
-    public AjaxResult importTemplateExcel(String sheetName, String title)
+    public R importTemplateExcel(String sheetName, String title)
     {
         this.init(null, sheetName, title, Excel.Type.IMPORT);
         return exportExcel();
@@ -573,7 +573,7 @@ public class ExcelUtil<T>
      * 
      * @return 结果
      */
-    public AjaxResult exportExcel()
+    public R exportExcel()
     {
         OutputStream out = null;
         try
@@ -582,7 +582,7 @@ public class ExcelUtil<T>
             String filename = encodingFilename(sheetName);
             out = new FileOutputStream(getAbsoluteFile(filename));
             wb.write(out);
-            return AjaxResult.success(filename);
+            return R.success(filename);
         }
         catch (Exception e)
         {

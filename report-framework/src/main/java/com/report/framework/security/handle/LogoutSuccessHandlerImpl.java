@@ -2,7 +2,7 @@ package com.report.framework.security.handle;
 
 import com.alibaba.fastjson2.JSON;
 import com.report.common.constant.Constants;
-import com.report.common.core.domain.AjaxResult;
+import com.report.common.core.domain.R;
 import com.report.common.core.domain.model.LoginUser;
 import com.report.common.utils.ServletUtils;
 import com.report.common.utils.StringUtils;
@@ -48,6 +48,6 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler
             // 记录用户退出日志
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, "退出成功"));
         }
-        ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.success("退出成功")));
+        ServletUtils.renderString(response, JSON.toJSONString(R.success("退出成功")));
     }
 }

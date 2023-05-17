@@ -1,7 +1,7 @@
 package com.report.system;
 
 import com.report.common.core.controller.BaseController;
-import com.report.common.core.domain.AjaxResult;
+import com.report.common.core.domain.R;
 import com.report.common.core.domain.model.RegisterBody;
 import com.report.common.utils.StringUtils;
 import com.report.framework.web.service.SysRegisterService;
@@ -26,7 +26,7 @@ public class SysRegisterController extends BaseController
     private ISysConfigService configService;
 
     @PostMapping("/register")
-    public AjaxResult register(@RequestBody RegisterBody user)
+    public R register(@RequestBody RegisterBody user)
     {
         if (!("true".equals(configService.selectConfigByKey("sys.account.registerUser"))))
         {

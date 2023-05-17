@@ -3,7 +3,7 @@ package com.report.monitor;
 import com.report.common.annotation.Log;
 import com.report.common.constant.CacheConstants;
 import com.report.common.core.controller.BaseController;
-import com.report.common.core.domain.AjaxResult;
+import com.report.common.core.domain.R;
 import com.report.common.core.domain.model.LoginUser;
 import com.report.common.core.page.TableDataInfo;
 import com.report.common.core.redis.RedisCache;
@@ -72,7 +72,7 @@ public class SysUserOnlineController extends BaseController
     @PreAuthorize("@ss.hasPermi('monitor:online:forceLogout')")
     @Log(title = "在线用户", businessType = BusinessType.FORCE)
     @DeleteMapping("/{tokenId}")
-    public AjaxResult forceLogout(@PathVariable String tokenId)
+    public R forceLogout(@PathVariable String tokenId)
     {
         redisCache.deleteObject(CacheConstants.LOGIN_TOKEN_KEY + tokenId);
         return success();

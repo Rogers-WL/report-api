@@ -2,7 +2,7 @@ package com.report.framework.interceptor;
 
 import com.alibaba.fastjson2.JSON;
 import com.report.common.annotation.RepeatSubmit;
-import com.report.common.core.domain.AjaxResult;
+import com.report.common.core.domain.R;
 import com.report.common.utils.ServletUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -32,8 +32,8 @@ public abstract class RepeatSubmitInterceptor implements HandlerInterceptor
             {
                 if (this.isRepeatSubmit(request, annotation))
                 {
-                    AjaxResult ajaxResult = AjaxResult.error(annotation.message());
-                    ServletUtils.renderString(response, JSON.toJSONString(ajaxResult));
+                    R r = R.error(annotation.message());
+                    ServletUtils.renderString(response, JSON.toJSONString(r));
                     return false;
                 }
             }

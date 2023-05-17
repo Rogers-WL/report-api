@@ -4,7 +4,7 @@ import com.google.code.kaptcha.Producer;
 import com.report.common.config.ReportConfig;
 import com.report.common.constant.CacheConstants;
 import com.report.common.constant.Constants;
-import com.report.common.core.domain.AjaxResult;
+import com.report.common.core.domain.R;
 import com.report.common.core.redis.RedisCache;
 import com.report.common.utils.sign.Base64;
 import com.report.common.utils.uuid.IdUtils;
@@ -44,9 +44,9 @@ public class CaptchaController
      * 生成验证码
      */
     @GetMapping("/captchaImage")
-    public AjaxResult getCode(HttpServletResponse response) throws IOException
+    public R getCode(HttpServletResponse response) throws IOException
     {
-        AjaxResult ajax = AjaxResult.success();
+        R ajax = R.success();
         boolean captchaEnabled = configService.selectCaptchaEnabled();
         ajax.put("captchaEnabled", captchaEnabled);
         if (!captchaEnabled)
@@ -85,7 +85,7 @@ public class CaptchaController
         }
         catch (IOException e)
         {
-            return AjaxResult.error(e.getMessage());
+            return R.error(e.getMessage());
         }
 
         ajax.put("uuid", uuid);
