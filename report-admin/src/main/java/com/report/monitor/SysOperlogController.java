@@ -1,4 +1,4 @@
-package com.report.web.controller.monitor;
+package com.report.monitor;
 
 import com.report.common.annotation.Log;
 import com.report.common.core.controller.BaseController;

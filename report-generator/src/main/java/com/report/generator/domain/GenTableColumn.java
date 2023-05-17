@@ -1,6 +1,6 @@
 package com.report.generator.domain;
 
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 import com.report.common.utils.StringUtils;
 
 import javax.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
  * 
  * @author rogers
  */
-public class GenTableColumn extends BaseEntity
+public class GenTableColumn extends baseEntityOld
 {
     private static final long serialVersionUID = 1L;
 

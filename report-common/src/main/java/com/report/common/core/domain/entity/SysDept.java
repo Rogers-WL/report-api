@@ -1,6 +1,6 @@
 package com.report.common.core.domain.entity;
 
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * 
  * @author rogers
  */
-public class SysDept extends BaseEntity
+public class SysDept extends baseEntityOld
 {
     private static final long serialVersionUID = 1L;
 

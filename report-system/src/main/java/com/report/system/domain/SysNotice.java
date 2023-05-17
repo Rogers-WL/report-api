@@ -1,6 +1,6 @@
 package com.report.system.domain;
 
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 import com.report.common.xss.Xss;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
  * 
  * @author rogers
  */
-public class SysNotice extends BaseEntity
+public class SysNotice extends baseEntityOld
 {
     private static final long serialVersionUID = 1L;
 

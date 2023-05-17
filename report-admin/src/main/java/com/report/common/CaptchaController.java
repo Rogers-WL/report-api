@@ -1,4 +1,4 @@
-package com.report.web.controller.common;
+package com.report.common;
 
 import com.google.code.kaptcha.Producer;
 import com.report.common.config.ReportConfig;

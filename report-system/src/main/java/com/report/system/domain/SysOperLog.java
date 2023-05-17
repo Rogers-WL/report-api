@@ -3,7 +3,7 @@ package com.report.system.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.report.common.annotation.Excel;
 import com.report.common.annotation.Excel.ColumnType;
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import java.util.Date;
  * 
  * @author rogers
  */
-public class SysOperLog extends BaseEntity
+public class SysOperLog extends baseEntityOld
 {
     private static final long serialVersionUID = 1L;
 

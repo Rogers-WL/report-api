@@ -14,7 +14,7 @@ import java.util.Map;
  * 
  * @author rogers
  */
-public class BaseEntity implements Serializable
+public class baseEntityOld implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

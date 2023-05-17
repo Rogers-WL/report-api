@@ -2,7 +2,7 @@ package com.report.system.domain;
 
 import com.report.common.annotation.Excel;
 import com.report.common.annotation.Excel.ColumnType;
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
  * 
  * @author rogers
  */
-public class SysConfig extends BaseEntity
+public class SysConfig extends baseEntityOld
 {
     private static final long serialVersionUID = 1L;
 

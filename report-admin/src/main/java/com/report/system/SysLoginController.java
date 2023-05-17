@@ -1,4 +1,4 @@
-package com.report.web.controller.system;
+package com.report.system;
 
 import com.report.common.constant.Constants;
 import com.report.common.core.domain.AjaxResult;

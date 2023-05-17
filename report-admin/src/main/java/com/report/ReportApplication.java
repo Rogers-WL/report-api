@@ -10,7 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author rogers
  */
 @MapperScan(value = {"com.report.**.mapper"})
-@SpringBootApplication(scanBasePackages = {"com.report"})
+// (scanBasePackages = {"com.report"})
+@SpringBootApplication
 public class ReportApplication {
     public static void main(String[] args) {
         SpringApplication.run(ReportApplication.class, args);

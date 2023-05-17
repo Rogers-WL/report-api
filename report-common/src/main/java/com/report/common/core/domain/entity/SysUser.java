@@ -2,7 +2,7 @@ package com.report.common.core.domain.entity;
 
 import com.report.common.annotation.Excel;
 import com.report.common.annotation.Excels;
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 import com.report.common.xss.Xss;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author rogers
  */
-public class SysUser extends BaseEntity
+public class SysUser extends baseEntityOld
 {
     private static final long serialVersionUID = 1L;
 

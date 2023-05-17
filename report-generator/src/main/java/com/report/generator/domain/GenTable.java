@@ -1,7 +1,7 @@
 package com.report.generator.domain;
 
 import com.report.common.constant.GenConstants;
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 import com.report.common.utils.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * 
  * @author rogers
  */
-public class GenTable extends BaseEntity
+public class GenTable extends baseEntityOld
 {
     private static final long serialVersionUID = 1L;
 

@@ -1,7 +1,7 @@
 package com.report.framework.aspectj;
 
 import com.report.common.annotation.DataScope;
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 import com.report.common.core.domain.entity.SysRole;
 import com.report.common.core.domain.entity.SysUser;
 import com.report.common.core.domain.model.LoginUser;
@@ -152,10 +152,10 @@ public class DataScopeAspect
         if (StringUtils.isNotBlank(sqlString.toString()))
         {
             Object params = joinPoint.getArgs()[0];
-            if (StringUtils.isNotNull(params) && params instanceof BaseEntity)
+            if (StringUtils.isNotNull(params) && params instanceof baseEntityOld)
             {
-                BaseEntity baseEntity = (BaseEntity) params;
-                baseEntity.getParams().put(DATA_SCOPE, " AND (" + sqlString.substring(4) + ")");
+                baseEntityOld baseEntityOLd = (baseEntityOld) params;
+                baseEntityOLd.getParams().put(DATA_SCOPE, " AND (" + sqlString.substring(4) + ")");
             }
         }
     }
@@ -166,10 +166,10 @@ public class DataScopeAspect
     private void clearDataScope(final JoinPoint joinPoint)
     {
         Object params = joinPoint.getArgs()[0];
-        if (StringUtils.isNotNull(params) && params instanceof BaseEntity)
+        if (StringUtils.isNotNull(params) && params instanceof baseEntityOld)
         {
-            BaseEntity baseEntity = (BaseEntity) params;
-            baseEntity.getParams().put(DATA_SCOPE, "");
+            baseEntityOld baseEntityOLd = (baseEntityOld) params;
+            baseEntityOLd.getParams().put(DATA_SCOPE, "");
         }
     }
 }

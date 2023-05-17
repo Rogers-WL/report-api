@@ -1,4 +1,4 @@
-package com.report.web.controller.system;
+package com.report.system;
 
 import com.report.common.config.ReportConfig;
 import com.report.common.utils.StringUtils;

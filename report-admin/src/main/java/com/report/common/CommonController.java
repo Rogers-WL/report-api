@@ -1,4 +1,4 @@
-package com.report.web.controller.common;
+package com.report.common;
 
 import com.report.common.config.ReportConfig;
 import com.report.common.constant.Constants;

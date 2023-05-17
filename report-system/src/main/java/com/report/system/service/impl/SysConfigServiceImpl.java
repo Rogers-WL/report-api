@@ -1,11 +1,9 @@
 package com.report.system.service.impl;
 
-import com.report.common.annotation.DataSource;
 import com.report.common.constant.CacheConstants;
 import com.report.common.constant.UserConstants;
 import com.report.common.core.redis.RedisCache;
 import com.report.common.core.text.Convert;
-import com.report.common.enums.DataSourceType;
 import com.report.common.exception.ServiceException;
 import com.report.common.utils.StringUtils;
 import com.report.system.domain.SysConfig;
@@ -48,7 +46,6 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 参数配置信息
      */
     @Override
-    @DataSource(DataSourceType.MASTER)
     public SysConfig selectConfigById(Long configId)
     {
         SysConfig config = new SysConfig();

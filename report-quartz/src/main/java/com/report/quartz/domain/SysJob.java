@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.report.common.annotation.Excel;
 import com.report.common.annotation.Excel.ColumnType;
 import com.report.common.constant.ScheduleConstants;
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 import com.report.common.utils.StringUtils;
 import com.report.quartz.util.CronUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -19,7 +19,7 @@ import java.util.Date;
  * 
  * @author rogers
  */
-public class SysJob extends BaseEntity
+public class SysJob extends baseEntityOld
 {
     private static final long serialVersionUID = 1L;
 

@@ -1,4 +1,4 @@
-package com.report.web.controller.monitor;
+package com.report.monitor;
 
 import com.report.common.core.domain.AjaxResult;
 import com.report.framework.web.domain.Server;

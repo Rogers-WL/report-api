@@ -1,7 +1,7 @@
 package com.report.quartz.domain;
 
 import com.report.common.annotation.Excel;
-import com.report.common.core.domain.BaseEntity;
+import com.report.common.core.domain.baseEntityOld;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -12,7 +12,7 @@ import java.util.Date;
  * 
  * @author rogers
  */
-public class SysJobLog extends BaseEntity
+public class SysJobLog extends baseEntityOld
 {
     private static final long serialVersionUID = 1L;
 
