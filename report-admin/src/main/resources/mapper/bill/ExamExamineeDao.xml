@@ -3,6 +3,24 @@
 <mapper namespace="com.report.bill.mapper.BillOutgoingsMapper">
     <select id="getSameBill" resultType="com.report.bill.domain.entity.BillOutgoingsDo">
         select t.* from bill_outgoings t
-        where t.type = #{type} and t.amount =  #{amount} and t.do_time =
+        where t.type = #{type} and t.amount =  #{amount}
+          and #{time} = date_format(t.do_time, '%H%i')
+        limit 1
+    </select>
+
+    <select id="getMostSimilarBill" resultType="com.report.bill.domain.entity.BillOutgoingsDo">
+        select t.*
+        from bill_outgoings t
+        where t.type = #{type}
+            <if test="amountLow != null">
+                and t.amount &gt;= #{amountLow}
+            </if>
+            <if test="amouontHigh != null">
+                and t.amount &lt;= #{amouontHigh}
+            </if>
+            and #{timeStart} &lt;= date_format(t.do_time, '%H%i')
+            and #{timeEnd} &gt;= date_format(t.do_time, '%H%i')
+        order by abs(t.amount - #{amount})
+        limit 1
     </select>
 </mapper>

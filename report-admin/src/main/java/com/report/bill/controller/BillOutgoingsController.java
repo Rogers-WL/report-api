@@ -25,14 +25,12 @@ public class BillOutgoingsController {
 
     @PostMapping
     public R add(@RequestBody @Validated BillOutgoingsUpdateVo updateVo){
-        service.add(updateVo);
-        return R.success();
+        return service.add(updateVo);
     }
 
     @PostMapping("/predict")
     public R predictInput(@RequestBody OutgoingsBaseInfoVo baseInfoVo){
-        service.predictInput(baseInfoVo);
-        return R.success();
+        return service.predictInput(baseInfoVo);
     }
 
 }
