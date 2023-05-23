@@ -100,7 +100,7 @@ token:
     expireTime: 30
 
 mybatis-plus:
-  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  mapper-locations: classpath*:/mapper/**/*.xml
   type-aliases-package: com.report.**.domain,com.report.**.dto
   executor-type: simple
   configuration:

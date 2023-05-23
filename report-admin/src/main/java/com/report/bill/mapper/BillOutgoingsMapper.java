@@ -13,5 +13,4 @@ public interface BillOutgoingsMapper extends BaseMapper<BillOutgoingsDo> {
 
     BillOutgoingsDo getMostSimilarBill(OutgoingsQueryDto queryDto);
 
-
 }

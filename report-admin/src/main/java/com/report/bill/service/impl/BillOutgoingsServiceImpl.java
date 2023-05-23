@@ -1,17 +1,19 @@
 package com.report.bill.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.report.bill.domain.BillConstant;
 import com.report.bill.domain.dto.OutgoingsQueryDto;
 import com.report.bill.domain.entity.BillOutgoingsDo;
+import com.report.bill.domain.vo.outgoings.BillOutgoingsQueryVo;
 import com.report.bill.domain.vo.outgoings.BillOutgoingsUpdateVo;
 import com.report.bill.domain.vo.outgoings.OutgoingsBaseInfoVo;
 import com.report.bill.domain.vo.outgoings.OutgoingsPredictVo;
 import com.report.bill.mapper.BillOutgoingsMapper;
 import com.report.bill.mapstruct.BillOutgoingsMapstruct;
 import com.report.bill.service.IBillOutgoingsService;
-import com.report.common.core.domain.R;
+import com.report.common.utils.DictUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,14 +36,28 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, B
     private BillOutgoingsMapper mapper;
 
     @Override
-    public R add(BillOutgoingsUpdateVo updateVo) {
-        BillOutgoingsDo outgoingsDo = mapstruct.updatVoToDo(updateVo);
-        save(outgoingsDo);
-        return R.success();
+    public List<BillOutgoingsDo> list(BillOutgoingsQueryVo queryVo) {
+        return list(new LambdaQueryWrapper<BillOutgoingsDo>().eq(queryVo.getType() != null, BillOutgoingsDo::getType, queryVo.getType())
+                .orderByDesc(BillOutgoingsDo::getDoTime));
     }
 
     @Override
-    public R predictInput(OutgoingsBaseInfoVo baseInfoVo) {
+    public void add(BillOutgoingsUpdateVo updateVo) {
+        BillOutgoingsDo outgoingsDo = mapstruct.updateVoToDo(updateVo);
+        String dayOfWeek = updateVo.getDoTime().getDayOfWeek().name();
+        outgoingsDo.setTag(String.join(",", updateVo.getTag()))
+                .setTypeName(DictUtils.getDictLabel(BillConstant.OUTGOINGS_TYPE_DICT, updateVo.getType().toString()))
+                .setWeekday(dayOfWeek.charAt(0)  + dayOfWeek.toLowerCase().substring(1).toLowerCase());
+        save(outgoingsDo);
+    }
+
+    @Override
+    public void edit(BillOutgoingsUpdateVo updateVo) {
+
+    }
+
+    @Override
+    public OutgoingsPredictVo predictInput(OutgoingsBaseInfoVo baseInfoVo) {
         String doTimeType = BillConstant.DAY_TYPE_WORKDAY;
         DayOfWeek dayOfWeek = baseInfoVo.getDoTime().getDayOfWeek();
         if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
@@ -89,6 +105,6 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, B
             predictVo.setTag(Arrays.asList(sameBill.getTag().split(",")))
                     .setIsNecessary(sameBill.getIsNecessary());
         }
-        return R.success(predictVo);
+        return predictVo;
     }
 }

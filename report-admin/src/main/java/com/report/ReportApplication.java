@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @MapperScan(value = {"com.report.**.mapper"})
 // (scanBasePackages = {"com.report"})
-@SpringBootApplication
+@SpringBootApplication (scanBasePackages = {"com.report"})
 public class ReportApplication {
     public static void main(String[] args) {
         SpringApplication.run(ReportApplication.class, args);
