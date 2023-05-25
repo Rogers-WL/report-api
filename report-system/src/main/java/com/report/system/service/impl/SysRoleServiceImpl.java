@@ -4,7 +4,7 @@ import com.report.common.annotation.DataScope;
 import com.report.common.constant.UserConstants;
 import com.report.common.core.domain.entity.SysRole;
 import com.report.common.core.domain.entity.SysUser;
-import com.report.common.exception.ServiceException;
+import com.report.common.exception.BusinessException;
 import com.report.common.utils.SecurityUtils;
 import com.report.common.utils.StringUtils;
 import com.report.common.utils.spring.SpringUtils;
@@ -182,7 +182,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     {
         if (StringUtils.isNotNull(role.getRoleId()) && role.isAdmin())
         {
-            throw new ServiceException("不允许操作超级管理员角色");
+            throw new BusinessException("不允许操作超级管理员角色");
         }
     }
 
@@ -201,7 +201,7 @@ public class SysRoleServiceImpl implements ISysRoleService
             List<SysRole> roles = SpringUtils.getAopProxy(this).selectRoleList(role);
             if (StringUtils.isEmpty(roles))
             {
-                throw new ServiceException("没有权限访问角色数据！");
+                throw new BusinessException("没有权限访问角色数据！");
             }
         }
     }
@@ -362,7 +362,7 @@ public class SysRoleServiceImpl implements ISysRoleService
             SysRole role = selectRoleById(roleId);
             if (countUserRoleByRoleId(roleId) > 0)
             {
-                throw new ServiceException(String.format("%1$s已分配,不能删除", role.getRoleName()));
+                throw new BusinessException(String.format("%1$s已分配,不能删除", role.getRoleName()));
             }
         }
         // 删除角色与菜单关联

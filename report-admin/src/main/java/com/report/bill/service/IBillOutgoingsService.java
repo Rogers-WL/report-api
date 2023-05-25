@@ -16,9 +16,13 @@ public interface IBillOutgoingsService extends IService<BillOutgoingsDo> {
 
     List<BillOutgoingsDo> list(BillOutgoingsQueryVo queryVo);
 
+    BillOutgoingsDo getDetail(Long id);
+
     void add(BillOutgoingsUpdateVo updateVo);
 
     void edit(BillOutgoingsUpdateVo updateVo);
+
+    void del(Long[] ids);
 
     OutgoingsPredictVo predictInput(OutgoingsBaseInfoVo baseInfoVo);
 }

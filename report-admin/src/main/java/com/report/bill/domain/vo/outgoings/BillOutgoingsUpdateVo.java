@@ -15,6 +15,8 @@ import java.util.List;
 @Data
 public class BillOutgoingsUpdateVo {
 
+    private Long id;
+
     @NotNull(message = "金额必填")
     private BigDecimal amount;
 

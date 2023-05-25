@@ -2,7 +2,7 @@ package com.report.common.utils;
 
 import com.report.common.constant.HttpStatus;
 import com.report.common.core.domain.model.LoginUser;
-import com.report.common.exception.ServiceException;
+import com.report.common.exception.BusinessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,7 +25,7 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户ID异常", HttpStatus.UNAUTHORIZED);
+            throw new BusinessException("获取用户ID异常", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -40,7 +40,7 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取部门ID异常", HttpStatus.UNAUTHORIZED);
+            throw new BusinessException("获取部门ID异常", HttpStatus.UNAUTHORIZED);
         }
     }
     
@@ -55,7 +55,7 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户账户异常", HttpStatus.UNAUTHORIZED);
+            throw new BusinessException("获取用户账户异常", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -70,7 +70,7 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
+            throw new BusinessException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
         }
     }
 

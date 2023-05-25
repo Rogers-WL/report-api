@@ -7,7 +7,7 @@ import com.report.common.core.domain.entity.SysDept;
 import com.report.common.core.domain.entity.SysRole;
 import com.report.common.core.domain.entity.SysUser;
 import com.report.common.core.text.Convert;
-import com.report.common.exception.ServiceException;
+import com.report.common.exception.BusinessException;
 import com.report.common.utils.SecurityUtils;
 import com.report.common.utils.StringUtils;
 import com.report.common.utils.spring.SpringUtils;
@@ -198,7 +198,7 @@ public class SysDeptServiceImpl implements ISysDeptService
             List<SysDept> depts = SpringUtils.getAopProxy(this).selectDeptList(dept);
             if (StringUtils.isEmpty(depts))
             {
-                throw new ServiceException("没有权限访问部门数据！");
+                throw new BusinessException("没有权限访问部门数据！");
             }
         }
     }
@@ -216,7 +216,7 @@ public class SysDeptServiceImpl implements ISysDeptService
         // 如果父节点不为正常状态,则不允许新增子节点
         if (!UserConstants.DEPT_NORMAL.equals(info.getStatus()))
         {
-            throw new ServiceException("部门停用，不允许新增");
+            throw new BusinessException("部门停用，不允许新增");
         }
         dept.setAncestors(info.getAncestors() + "," + dept.getParentId());
         return deptMapper.insertDept(dept);

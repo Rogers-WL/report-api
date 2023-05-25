@@ -4,7 +4,7 @@ import com.report.common.annotation.DataScope;
 import com.report.common.constant.UserConstants;
 import com.report.common.core.domain.entity.SysRole;
 import com.report.common.core.domain.entity.SysUser;
-import com.report.common.exception.ServiceException;
+import com.report.common.exception.BusinessException;
 import com.report.common.utils.SecurityUtils;
 import com.report.common.utils.StringUtils;
 import com.report.common.utils.bean.BeanValidators;
@@ -219,7 +219,7 @@ public class SysUserServiceImpl implements ISysUserService
     {
         if (StringUtils.isNotNull(user.getUserId()) && user.isAdmin())
         {
-            throw new ServiceException("不允许操作超级管理员用户");
+            throw new BusinessException("不允许操作超级管理员用户");
         }
     }
 
@@ -238,7 +238,7 @@ public class SysUserServiceImpl implements ISysUserService
             List<SysUser> users = SpringUtils.getAopProxy(this).selectUserList(user);
             if (StringUtils.isEmpty(users))
             {
-                throw new ServiceException("没有权限访问用户数据！");
+                throw new BusinessException("没有权限访问用户数据！");
             }
         }
     }
@@ -480,7 +480,7 @@ public class SysUserServiceImpl implements ISysUserService
     {
         if (StringUtils.isNull(userList) || userList.size() == 0)
         {
-            throw new ServiceException("导入用户数据不能为空！");
+            throw new BusinessException("导入用户数据不能为空！");
         }
         int successNum = 0;
         int failureNum = 0;
@@ -530,7 +530,7 @@ public class SysUserServiceImpl implements ISysUserService
         if (failureNum > 0)
         {
             failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
-            throw new ServiceException(failureMsg.toString());
+            throw new BusinessException(failureMsg.toString());
         }
         else
         {

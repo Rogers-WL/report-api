@@ -4,7 +4,7 @@ import com.report.common.constant.CacheConstants;
 import com.report.common.constant.UserConstants;
 import com.report.common.core.redis.RedisCache;
 import com.report.common.core.text.Convert;
-import com.report.common.exception.ServiceException;
+import com.report.common.exception.BusinessException;
 import com.report.common.utils.StringUtils;
 import com.report.system.domain.SysConfig;
 import com.report.system.mapper.SysConfigMapper;
@@ -159,7 +159,7 @@ public class SysConfigServiceImpl implements ISysConfigService
             SysConfig config = selectConfigById(configId);
             if (StringUtils.equals(UserConstants.YES, config.getConfigType()))
             {
-                throw new ServiceException(String.format("内置参数【%1$s】不能删除 ", config.getConfigKey()));
+                throw new BusinessException(String.format("内置参数【%1$s】不能删除 ", config.getConfigKey()));
             }
             configMapper.deleteConfigById(configId);
             redisCache.deleteObject(getCacheKey(config.getConfigKey()));

@@ -3,7 +3,7 @@ package com.report.system.service.impl;
 import com.report.common.constant.UserConstants;
 import com.report.common.core.domain.entity.SysDictData;
 import com.report.common.core.domain.entity.SysDictType;
-import com.report.common.exception.ServiceException;
+import com.report.common.exception.BusinessException;
 import com.report.common.utils.DictUtils;
 import com.report.common.utils.StringUtils;
 import com.report.system.mapper.SysDictDataMapper;
@@ -125,7 +125,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
             SysDictType dictType = selectDictTypeById(dictId);
             if (dictDataMapper.countDictDataByType(dictType.getDictType()) > 0)
             {
-                throw new ServiceException(String.format("%1$s已分配,不能删除", dictType.getDictName()));
+                throw new BusinessException(String.format("%1$s已分配,不能删除", dictType.getDictName()));
             }
             dictTypeMapper.deleteDictTypeById(dictId);
             DictUtils.removeDictCache(dictType.getDictType());

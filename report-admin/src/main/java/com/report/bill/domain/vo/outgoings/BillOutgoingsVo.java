@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("bill_outgoings")
-public class BillOutgoingsListVo {
+public class BillOutgoingsVo {
 
     private Long id;
 

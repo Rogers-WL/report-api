@@ -42,6 +42,11 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, B
     }
 
     @Override
+    public BillOutgoingsDo getDetail(Long id) {
+        return null;
+    }
+
+    @Override
     public void add(BillOutgoingsUpdateVo updateVo) {
         BillOutgoingsDo outgoingsDo = mapstruct.updateVoToDo(updateVo);
         String dayOfWeek = updateVo.getDoTime().getDayOfWeek().name();
@@ -53,6 +58,11 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, B
 
     @Override
     public void edit(BillOutgoingsUpdateVo updateVo) {
+
+    }
+
+    @Override
+    public void del(Long[] ids) {
 
     }
 

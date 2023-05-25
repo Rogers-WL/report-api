@@ -1,7 +1,7 @@
 package com.report.system.service.impl;
 
 import com.report.common.constant.UserConstants;
-import com.report.common.exception.ServiceException;
+import com.report.common.exception.BusinessException;
 import com.report.common.utils.StringUtils;
 import com.report.system.domain.SysPost;
 import com.report.system.mapper.SysPostMapper;
@@ -147,7 +147,7 @@ public class SysPostServiceImpl implements ISysPostService
             SysPost post = selectPostById(postId);
             if (countUserPostById(postId) > 0)
             {
-                throw new ServiceException(String.format("%1$s已分配,不能删除", post.getPostName()));
+                throw new BusinessException(String.format("%1$s已分配,不能删除", post.getPostName()));
             }
         }
         return postMapper.deletePostByIds(postIds);

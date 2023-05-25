@@ -6,7 +6,7 @@ import com.report.common.constant.UserConstants;
 import com.report.common.core.domain.entity.SysUser;
 import com.report.common.core.domain.model.LoginUser;
 import com.report.common.core.redis.RedisCache;
-import com.report.common.exception.ServiceException;
+import com.report.common.exception.BusinessException;
 import com.report.common.exception.user.*;
 import com.report.common.utils.DateUtils;
 import com.report.common.utils.MessageUtils;
@@ -83,7 +83,7 @@ public class SysLoginService
             else
             {
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
-                throw new ServiceException(e.getMessage());
+                throw new BusinessException(e.getMessage());
             }
         }
         finally

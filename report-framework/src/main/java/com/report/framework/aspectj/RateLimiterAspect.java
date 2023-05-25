@@ -2,7 +2,7 @@ package com.report.framework.aspectj;
 
 import com.report.common.annotation.RateLimiter;
 import com.report.common.enums.LimitType;
-import com.report.common.exception.ServiceException;
+import com.report.common.exception.BusinessException;
 import com.report.common.utils.StringUtils;
 import com.report.common.utils.ip.IpUtils;
 import org.aspectj.lang.JoinPoint;
@@ -60,11 +60,11 @@ public class RateLimiterAspect
             Long number = redisTemplate.execute(limitScript, keys, count, time);
             if (StringUtils.isNull(number) || number.intValue() > count)
             {
-                throw new ServiceException("访问过于频繁，请稍候再试");
+                throw new BusinessException("访问过于频繁，请稍候再试");
             }
             log.info("限制请求'{}',当前请求'{}',缓存key'{}'", count, number.intValue(), combineKey);
         }
-        catch (ServiceException e)
+        catch (BusinessException e)
         {
             throw e;
         }
