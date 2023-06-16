@@ -9,7 +9,7 @@ report:
     # 实例演示开关
     demoEnabled: true
     # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-    profile: D:/ruoyi/uploadPath
+    profile: /home/ruoyi/uploadPath
     # 获取ip地址开关
     addressEnabled: false
     # 验证码类型 math 数组计算 char 字符验证
@@ -20,18 +20,19 @@ server:
         # tomcat的URI编码
         uri-encoding: UTF-8
         # 连接数满后的排队数，默认为100
-        accept-count: 100
+        accept-count: 50
         threads:
             # tomcat最大线程数，默认为200
-            max: 200
+            max: 100
             # Tomcat启动初始化的线程数，默认值10
             min-spare: 10
+
 # 数据源配置
 spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://124.70.131.104:3306/xm?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&allowMultiQueries=true
+        url: jdbc:mysql://127.0.0.1:3306/xm?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&allowMultiQueries=true
         username: root
         password: Root@123456
         druid:
@@ -59,9 +60,9 @@ spring:
             testOnBorrow: false
             testOnReturn: false
             webStatFilter: 
-                enabled: true
+                enabled: false
             statViewServlet:
-                enabled: true
+                enabled: false
                 # 设置白名单，不填则允许所有访问
                 allow:
                 url-pattern: /druid/*
@@ -82,19 +83,19 @@ spring:
     devtools:
         restart:
             # 热部署开关
-            enabled: true
+            enabled: false
     # redis 配置
     redis:
         # 地址
-        host: 124.70.131.104
+        host: 127.0.0.1
         # 端口，默认为6379
         port: 6379
         # 数据库索引
         database: 0
         # 密码
         password: 12345
-        # 连接超时时间 10s
-        timeout: 10000
+        # 连接超时时间
+        timeout: 10s
         lettuce:
             pool:
                 # 连接池中的最小空闲连接
@@ -105,10 +106,11 @@ spring:
                 max-active: 8
                 # #连接池最大阻塞等待时间（使用负值表示没有限制）
                 max-wait: -1ms
+
 # Swagger配置
 swagger:
     # 是否开启swagger
-    enabled: true
+    enabled: false
     # 请求前缀
     pathMapping: /dev-api
 

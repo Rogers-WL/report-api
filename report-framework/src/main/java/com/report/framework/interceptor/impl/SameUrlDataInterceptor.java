@@ -3,7 +3,7 @@ package com.report.framework.interceptor.impl;
 import com.alibaba.fastjson2.JSON;
 import com.report.common.annotation.RepeatSubmit;
 import com.report.common.constant.CacheConstants;
-import com.report.common.core.redis.RedisCache;
+import com.report.common.core.redis.RedisUtil;
 import com.report.common.filter.RepeatedlyRequestWrapper;
 import com.report.common.utils.StringUtils;
 import com.report.common.utils.http.HttpHelper;
@@ -35,7 +35,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
     private String header;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil redisUtil;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -66,7 +66,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
         // 唯一标识（指定key + url + 消息头）
         String cacheRepeatKey = CacheConstants.REPEAT_SUBMIT_KEY + url + submitKey;
 
-        Object sessionObj = redisCache.getCacheObject(cacheRepeatKey);
+        Object sessionObj = redisUtil.getCacheObject(cacheRepeatKey);
         if (sessionObj != null)
         {
             Map<String, Object> sessionMap = (Map<String, Object>) sessionObj;
@@ -81,7 +81,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
         }
         Map<String, Object> cacheMap = new HashMap<String, Object>();
         cacheMap.put(url, nowDataMap);
-        redisCache.setCacheObject(cacheRepeatKey, cacheMap, annotation.interval(), TimeUnit.MILLISECONDS);
+        redisUtil.setCacheObject(cacheRepeatKey, cacheMap, annotation.interval(), TimeUnit.MILLISECONDS);
         return false;
     }
 

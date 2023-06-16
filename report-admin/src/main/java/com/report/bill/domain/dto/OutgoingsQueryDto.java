@@ -16,7 +16,7 @@ public class OutgoingsQueryDto {
 
     private Integer type;
 
-    private String time;
+    private String doTime;
 
     private String doTimeType;
 
@@ -26,5 +26,12 @@ public class OutgoingsQueryDto {
 
     private BigDecimal amountLow;
 
-    private BigDecimal amouontHigh;
+    private BigDecimal amountHigh;
+
+    private String tag;
+
+    private String key;
+
+    private Boolean isNecessary;
+
 }

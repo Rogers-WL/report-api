@@ -1,4 +1,4 @@
-package com.report.bill.domain.vo.outgoings;
+package com.report.bill.domain.vo.outgoings.req;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author: rogers
  */
 @Data
-public class BillOutgoingsUpdateVo {
+public class OutgoingsUpdateVo {
 
     private Long id;
 

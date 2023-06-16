@@ -1,4 +1,4 @@
-package com.report.bill.domain.vo.outgoings;
+package com.report.bill.domain.vo.outgoings.resp;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

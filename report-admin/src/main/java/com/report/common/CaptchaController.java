@@ -5,7 +5,7 @@ import com.report.common.config.ReportConfig;
 import com.report.common.constant.CacheConstants;
 import com.report.common.constant.Constants;
 import com.report.common.core.domain.R;
-import com.report.common.core.redis.RedisCache;
+import com.report.common.core.redis.RedisUtil;
 import com.report.common.utils.sign.Base64;
 import com.report.common.utils.uuid.IdUtils;
 import com.report.system.service.ISysConfigService;
@@ -36,7 +36,7 @@ public class CaptchaController
     private Producer captchaProducerMath;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil redisUtil;
     
     @Autowired
     private ISysConfigService configService;
@@ -76,7 +76,7 @@ public class CaptchaController
             image = captchaProducer.createImage(capStr);
         }
 
-        redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
+        redisUtil.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
         // 转换流信息写出
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();
         try

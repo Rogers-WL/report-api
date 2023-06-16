@@ -1,26 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.report.bill.mapper.BillOutgoingsMapper">
-    <select id="getSameBill" resultType="com.report.bill.domain.entity.BillOutgoingsDo">
-        select t.* from bill_outgoings t
-        where t.type = #{type} and t.amount =  #{amount}
-          and #{time} = date_format(t.do_time, '%H%i')
-        limit 1
-    </select>
 
-    <select id="getMostSimilarBill" resultType="com.report.bill.domain.entity.BillOutgoingsDo">
+    <select id="getList" resultType="com.report.bill.domain.entity.OutgoingsDo">
         select t.*
         from bill_outgoings t
-        where t.type = #{type}
+        <where>
+            <if test="type != null">
+              and  t.type = #{type}
+            </if>
+            <if test="tag != null and tag != ''">
+                and find_in_set(#{tag}, t.tag)
+            </if>
+            <if test="key != null and key != ''">
+                and t.remark like  concat('%', #{key}, '')
+            </if>
+            <if test="isNecessary != null">
+                and t.is_necessary = #{isNecessary}
+            </if>
             <if test="amountLow != null">
                 and t.amount &gt;= #{amountLow}
             </if>
-            <if test="amouontHigh != null">
-                and t.amount &lt;= #{amouontHigh}
+            <if test="amountHigh != null">
+                and t.amount &lt;= #{amountHigh}
             </if>
-            and #{timeStart} &lt;= date_format(t.do_time, '%H%i')
-            and #{timeEnd} &gt;= date_format(t.do_time, '%H%i')
+            <if test="timeStart != null and timeStart != ''">
+                and #{timeStart} &lt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+            <if test="timeEnd != null and timeEnd != ''">
+                and #{timeEnd} &gt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+        </where>
+        order by t.do_time desc
+    </select>
+
+    <select id="getSumTotal" resultType="java.math.BigDecimal">
+        select sum(t.amount)
+        from bill_outgoings t
+        <where>
+            <if test="type != null">
+                and  t.type = #{type}
+            </if>
+            <if test="tag != null and tag != ''">
+                and find_in_set(#{tag}, t.tag)
+            </if>
+            <if test="key != null and key != ''">
+                and t.remark like  concat('%', #{key}, '')
+            </if>
+            <if test="isNecessary != null">
+                and t.is_necessary = #{isNecessary}
+            </if>
+            <if test="amountLow != null">
+                and t.amount &gt;= #{amountLow}
+            </if>
+            <if test="amountHigh != null">
+                and t.amount &lt;= #{amountHigh}
+            </if>
+            <if test="timeStart != null and timeStart != ''">
+                and #{timeStart} &lt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+            <if test="timeEnd != null and timeEnd != ''">
+                and #{timeEnd} &gt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+        </where>
+        order by t.do_time desc
+    </select>
+
+    <select id="getSameBill" resultType="com.report.bill.domain.entity.OutgoingsDo">
+        select t.* from bill_outgoings t
+        where t.type = #{type} and t.amount =  #{amount}
+            and #{doTime} = date_format(t.do_time, '%H%i')
+        order by t.do_time desc
+        limit 1
+    </select>
+
+    <select id="getMostSimilarBill" resultType="com.report.bill.domain.entity.OutgoingsDo">
+        select t.*
+        from bill_outgoings t
+        where t.type = #{type}
+        <if test="amountLow != null">
+            and t.amount &gt;= #{amountLow}
+        </if>
+        <if test="amountHigh != null">
+            and t.amount &lt;= #{amountHigh}
+        </if>
+        and #{timeStart} &lt;= date_format(t.do_time, '%H%i')
+        and #{timeEnd} &gt;= date_format(t.do_time, '%H%i')
         order by abs(t.amount - #{amount})
         limit 1
+    </select>
+
+    <select id="getListByDay" resultType="com.report.bill.domain.dto.OutgoingsDayDto">
+        select date_format(t.do_time, '%Y-%m-%d') day, t.weekday, t.do_time_type, count(*) as times, sum(amount) as amount
+        from bill_outgoings t
+        <where>
+            <if test="type != null">
+                and t.type = #{type}
+            </if>
+            <if test="timeStart != null and timeStart != ''">
+                and #{timeStart} &lt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+            <if test="timeEnd != null and timeEnd != ''">
+                and #{timeEnd} &gt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+        </where>
+        group by day, t.weekday, t.do_time_type
+        order by day desc
+    </select>
+
+    <select id="getListByType" resultType="com.report.bill.domain.dto.OutgoingsTagDto">
+        select t.type, count(*) as times, sum(amount) as amount
+        from bill_outgoings t
+        <where>
+            <if test="key != null and key != ''">
+                and t.type_name like concat('%', #{key}, '%') and t.tag like concat('%', #{key}, '%')
+            </if>
+            <if test="timeStart != null and timeStart != ''">
+                and #{timeStart} &lt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+            <if test="timeEnd != null and timeEnd != ''">
+                and #{timeEnd} &gt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+        </where>
+        group by t.type
+
+         order by t.type
+    </select>
+
+    <select id="getListByTag" resultType="com.report.bill.domain.dto.OutgoingsTagDto">
+        select t.tag, t.type,  count(*) as times, sum(amount) as amount
+        from bill_outgoings t
+        <where>
+            <if test="key != null and key != ''">
+                and t.tag like concat('%', #{key}, '%')
+            </if>
+            <if test="timeStart != null and timeStart != ''">
+                and #{timeStart} &lt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+            <if test="timeEnd != null and timeEnd != ''">
+                and #{timeEnd} &gt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+        </where>
+        group by t.tag, t.type
     </select>
 </mapper>

@@ -5,7 +5,7 @@ import com.report.common.constant.Constants;
 import com.report.common.constant.UserConstants;
 import com.report.common.core.domain.entity.SysUser;
 import com.report.common.core.domain.model.LoginUser;
-import com.report.common.core.redis.RedisCache;
+import com.report.common.core.redis.RedisUtil;
 import com.report.common.exception.BusinessException;
 import com.report.common.exception.user.*;
 import com.report.common.utils.DateUtils;
@@ -41,7 +41,7 @@ public class SysLoginService
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil redisUtil;
     
     @Autowired
     private ISysUserService userService;
@@ -111,8 +111,8 @@ public class SysLoginService
         if (captchaEnabled)
         {
             String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
-            String captcha = redisCache.getCacheObject(verifyKey);
-            redisCache.deleteObject(verifyKey);
+            String captcha = redisUtil.getCacheObject(verifyKey);
+            redisUtil.deleteObject(verifyKey);
             if (captcha == null)
             {
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));

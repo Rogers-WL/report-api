@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("bill_outgoings")
-public class BillOutgoingsDo extends BaseDo {
+public class OutgoingsDo extends BaseDo {
 
     private BigDecimal amount;
 

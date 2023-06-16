@@ -3,7 +3,7 @@ package com.report.framework.web.service;
 import com.report.common.constant.CacheConstants;
 import com.report.common.constant.Constants;
 import com.report.common.core.domain.model.LoginUser;
-import com.report.common.core.redis.RedisCache;
+import com.report.common.core.redis.RedisUtil;
 import com.report.common.utils.ServletUtils;
 import com.report.common.utils.StringUtils;
 import com.report.common.utils.ip.AddressUtils;
@@ -49,7 +49,7 @@ public class TokenService
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil redisUtil;
 
     /**
      * 获取用户身份信息
@@ -68,7 +68,7 @@ public class TokenService
                 // 解析对应的权限以及用户信息
                 String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
                 String userKey = getTokenKey(uuid);
-                LoginUser user = redisCache.getCacheObject(userKey);
+                LoginUser user = redisUtil.getCacheObject(userKey);
                 return user;
             }
             catch (Exception e)
@@ -97,7 +97,7 @@ public class TokenService
         if (StringUtils.isNotEmpty(token))
         {
             String userKey = getTokenKey(token);
-            redisCache.deleteObject(userKey);
+            redisUtil.deleteObject(userKey);
         }
     }
 
@@ -146,7 +146,7 @@ public class TokenService
         loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * MILLIS_MINUTE);
         // 根据uuid将loginUser缓存
         String userKey = getTokenKey(loginUser.getToken());
-        redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
+        redisUtil.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
     }
 
     /**

@@ -5,7 +5,7 @@ import com.report.common.constant.Constants;
 import com.report.common.constant.UserConstants;
 import com.report.common.core.domain.entity.SysUser;
 import com.report.common.core.domain.model.RegisterBody;
-import com.report.common.core.redis.RedisCache;
+import com.report.common.core.redis.RedisUtil;
 import com.report.common.exception.user.CaptchaException;
 import com.report.common.exception.user.CaptchaExpireException;
 import com.report.common.utils.MessageUtils;
@@ -33,7 +33,7 @@ public class SysRegisterService
     private ISysConfigService configService;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil redisUtil;
 
     /**
      * 注册
@@ -101,8 +101,8 @@ public class SysRegisterService
     public void validateCaptcha(String username, String code, String uuid)
     {
         String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
-        String captcha = redisCache.getCacheObject(verifyKey);
-        redisCache.deleteObject(verifyKey);
+        String captcha = redisUtil.getCacheObject(verifyKey);
+        redisUtil.deleteObject(verifyKey);
         if (captcha == null)
         {
             throw new CaptchaExpireException();

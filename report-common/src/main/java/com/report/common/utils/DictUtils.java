@@ -3,7 +3,7 @@ package com.report.common.utils;
 import com.alibaba.fastjson2.JSONArray;
 import com.report.common.constant.CacheConstants;
 import com.report.common.core.domain.entity.SysDictData;
-import com.report.common.core.redis.RedisCache;
+import com.report.common.core.redis.RedisUtil;
 import com.report.common.utils.spring.SpringUtils;
 
 import java.util.Collection;
@@ -29,7 +29,7 @@ public class DictUtils
      */
     public static void setDictCache(String key, List<SysDictData> dictDatas)
     {
-        SpringUtils.getBean(RedisCache.class).setCacheObject(getCacheKey(key), dictDatas);
+        SpringUtils.getBean(RedisUtil.class).setCacheObject(getCacheKey(key), dictDatas);
     }
 
     /**
@@ -40,7 +40,7 @@ public class DictUtils
      */
     public static List<SysDictData> getDictCache(String key)
     {
-        JSONArray arrayCache = SpringUtils.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
+        JSONArray arrayCache = SpringUtils.getBean(RedisUtil.class).getCacheObject(getCacheKey(key));
         if (StringUtils.isNotNull(arrayCache))
         {
             return arrayCache.toList(SysDictData.class);
@@ -162,7 +162,7 @@ public class DictUtils
      */
     public static void removeDictCache(String key)
     {
-        SpringUtils.getBean(RedisCache.class).deleteObject(getCacheKey(key));
+        SpringUtils.getBean(RedisUtil.class).deleteObject(getCacheKey(key));
     }
 
     /**
@@ -170,8 +170,8 @@ public class DictUtils
      */
     public static void clearDictCache()
     {
-        Collection<String> keys = SpringUtils.getBean(RedisCache.class).keys(CacheConstants.SYS_DICT_KEY + "*");
-        SpringUtils.getBean(RedisCache.class).deleteObject(keys);
+        Collection<String> keys = SpringUtils.getBean(RedisUtil.class).keys(CacheConstants.SYS_DICT_KEY + "*");
+        SpringUtils.getBean(RedisUtil.class).deleteObject(keys);
     }
 
     /**

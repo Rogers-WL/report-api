@@ -3,7 +3,7 @@ package com.report.framework.web.service;
 import com.report.common.constant.CacheConstants;
 import com.report.common.constant.Constants;
 import com.report.common.core.domain.entity.SysUser;
-import com.report.common.core.redis.RedisCache;
+import com.report.common.core.redis.RedisUtil;
 import com.report.common.exception.user.UserPasswordNotMatchException;
 import com.report.common.exception.user.UserPasswordRetryLimitExceedException;
 import com.report.common.utils.MessageUtils;
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class SysPasswordService
 {
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil redisUtil;
 
     @Value(value = "${user.password.maxRetryCount}")
     private int maxRetryCount;
@@ -52,7 +52,7 @@ public class SysPasswordService
         String username = usernamePasswordAuthenticationToken.getName();
         String password = usernamePasswordAuthenticationToken.getCredentials().toString();
 
-        Integer retryCount = redisCache.getCacheObject(getCacheKey(username));
+        Integer retryCount = redisUtil.getCacheObject(getCacheKey(username));
 
         if (retryCount == null)
         {
@@ -71,7 +71,7 @@ public class SysPasswordService
             retryCount = retryCount + 1;
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
                     MessageUtils.message("user.password.retry.limit.count", retryCount)));
-            redisCache.setCacheObject(getCacheKey(username), retryCount, lockTime, TimeUnit.MINUTES);
+            redisUtil.setCacheObject(getCacheKey(username), retryCount, lockTime, TimeUnit.MINUTES);
             throw new UserPasswordNotMatchException();
         }
         else
@@ -87,9 +87,9 @@ public class SysPasswordService
 
     public void clearLoginRecordCache(String loginName)
     {
-        if (redisCache.hasKey(getCacheKey(loginName)))
+        if (redisUtil.hasKey(getCacheKey(loginName)))
         {
-            redisCache.deleteObject(getCacheKey(loginName));
+            redisUtil.deleteObject(getCacheKey(loginName));
         }
     }
 }

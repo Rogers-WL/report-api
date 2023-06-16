@@ -6,7 +6,7 @@ import com.report.common.core.controller.BaseController;
 import com.report.common.core.domain.R;
 import com.report.common.core.domain.model.LoginUser;
 import com.report.common.core.page.TableDataInfo;
-import com.report.common.core.redis.RedisCache;
+import com.report.common.core.redis.RedisUtil;
 import com.report.common.enums.BusinessType;
 import com.report.common.utils.StringUtils;
 import com.report.system.domain.SysUserOnline;
@@ -33,17 +33,17 @@ public class SysUserOnlineController extends BaseController
     private ISysUserOnlineService userOnlineService;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil redisUtil;
 
     @PreAuthorize("@ss.hasPermi('monitor:online:list')")
     @GetMapping("/list")
     public TableDataInfo list(String ipaddr, String userName)
     {
-        Collection<String> keys = redisCache.keys(CacheConstants.LOGIN_TOKEN_KEY + "*");
+        Collection<String> keys = redisUtil.keys(CacheConstants.LOGIN_TOKEN_KEY + "*");
         List<SysUserOnline> userOnlineList = new ArrayList<SysUserOnline>();
         for (String key : keys)
         {
-            LoginUser user = redisCache.getCacheObject(key);
+            LoginUser user = redisUtil.getCacheObject(key);
             if (StringUtils.isNotEmpty(ipaddr) && StringUtils.isNotEmpty(userName))
             {
                 userOnlineList.add(userOnlineService.selectOnlineByInfo(ipaddr, userName, user));
@@ -74,7 +74,7 @@ public class SysUserOnlineController extends BaseController
     @DeleteMapping("/{tokenId}")
     public R forceLogout(@PathVariable String tokenId)
     {
-        redisCache.deleteObject(CacheConstants.LOGIN_TOKEN_KEY + tokenId);
+        redisUtil.deleteObject(CacheConstants.LOGIN_TOKEN_KEY + tokenId);
         return success();
     }
 }
