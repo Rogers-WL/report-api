@@ -34,4 +34,6 @@ public class OutgoingsQueryDto {
 
     private Boolean isNecessary;
 
+    private String orderString;
+
 }

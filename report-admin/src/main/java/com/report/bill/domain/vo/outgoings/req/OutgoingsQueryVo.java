@@ -3,6 +3,7 @@ package com.report.bill.domain.vo.outgoings.req;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * @author: rogers
@@ -26,5 +27,6 @@ public class OutgoingsQueryVo {
 
     private BigDecimal amountHigh;
 
+    private Map<String, String> order;
 
 }

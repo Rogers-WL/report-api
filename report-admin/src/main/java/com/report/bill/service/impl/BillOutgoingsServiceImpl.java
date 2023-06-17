@@ -44,7 +44,7 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
 
     @Override
     public List<OutgoingsDo> list(OutgoingsQueryVo queryVo) {
-        return mapper.getList(mapstruct.queryVoToDto(queryVo));
+        return mapper.getList(toQueryDtoWithOrder(queryVo));
     }
 
     @Override
@@ -145,18 +145,19 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
 
     @Override
     public List<OutgoingsDayDto> listByDay(OutgoingsQueryVo queryVo) {
-        List<OutgoingsDayDto> dayList = mapper.getListByDay(mapstruct.queryVoToDto(queryVo));
-        if (dayList.size() == 0) {
+        List<OutgoingsDayDto> dayList = mapper.getListByDay(toQueryDtoWithOrder(queryVo));
+        if (dayList.isEmpty()) {
             return dayList;
         }
         //查询详情
-        String day1 = dayList.get(0).getDay().replaceAll("-", "");
-        String day2 = dayList.get(dayList.size() -1).getDay().replaceAll("-", "");
+        String day1 = dayList.get(0).getDay().replace("-", "");
+        String day2 = dayList.get(dayList.size() -1).getDay().replace("-", "");
         OutgoingsQueryDto queryDto = new OutgoingsQueryDto().setTimeStart(day1).setTimeEnd(day2);
         if (day1.compareTo(day2) > 0) {
             queryDto.setTimeStart(day2).setTimeEnd(day1);
         }
         queryDto.setType(queryVo.getType());
+        queryDto.setOrderString("do_time asc");
         List<OutgoingsDo> detailList = mapper.getList(queryDto);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         dayList.forEach(d-> d.setDetails(detailList.stream().filter(e-> e.getDoTime().format(formatter).equals(d.getDay()))
@@ -184,5 +185,22 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
         });
         typeList.addAll(tagList);
         return typeList;
+    }
+
+    /**
+     * 处理待排序的列表查询
+     *
+     * @author wl
+     * @date 2023/6/17
+     */
+    private OutgoingsQueryDto toQueryDtoWithOrder(OutgoingsQueryVo queryVo) {
+        OutgoingsQueryDto queryDto = mapstruct.queryVoToDto(queryVo);
+        // 处理排序
+        if (queryVo.getOrder() != null) {
+            Map<String, String> orderMap = queryVo.getOrder();
+            String order = orderMap.entrySet().stream().filter(e -> e.getValue() != null).map(e -> e.getKey() + " " + e.getValue()).collect(Collectors.joining(","));
+            queryDto.setOrderString(order);
+        }
+        return queryDto;
     }
 }

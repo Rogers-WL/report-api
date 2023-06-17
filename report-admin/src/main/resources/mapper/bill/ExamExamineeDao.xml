@@ -31,7 +31,15 @@
                 and #{timeEnd} &gt;= date_format(t.do_time, '%Y%m%d')
             </if>
         </where>
-        order by t.do_time desc
+        order by
+        <choose>
+            <when test="orderString == null or orderString == ''">
+                t.do_time desc
+            </when>
+            <otherwise>
+                ${orderString}
+            </otherwise>
+        </choose>
     </select>
 
     <select id="getSumTotal" resultType="java.math.BigDecimal">
@@ -105,7 +113,15 @@
             </if>
         </where>
         group by day, t.weekday, t.do_time_type
-        order by day desc
+        order by
+        <choose>
+            <when test="orderString == null or orderString == ''">
+                day desc
+            </when>
+            <otherwise>
+                ${orderString}
+            </otherwise>
+    </choose>
     </select>
 
     <select id="getListByType" resultType="com.report.bill.domain.dto.OutgoingsTagDto">
@@ -113,7 +129,7 @@
         from bill_outgoings t
         <where>
             <if test="key != null and key != ''">
-                and t.type_name like concat('%', #{key}, '%') and t.tag like concat('%', #{key}, '%')
+               and t.tag like concat('%', #{key}, '%')
             </if>
             <if test="timeStart != null and timeStart != ''">
                 and #{timeStart} &lt;= date_format(t.do_time, '%Y%m%d')
@@ -123,7 +139,6 @@
             </if>
         </where>
         group by t.type
-
          order by t.type
     </select>
 
