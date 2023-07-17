@@ -2,6 +2,7 @@ package com.report.bill.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.report.bill.domain.dto.OutgoingsDayDto;
+import com.report.bill.domain.dto.OutgoingsEditInfoDto;
 import com.report.bill.domain.dto.OutgoingsTagDto;
 import com.report.bill.domain.entity.OutgoingsDo;
 import com.report.bill.domain.vo.outgoings.req.OutgoingsPredictReqVo;
@@ -26,13 +27,15 @@ public interface IBillOutgoingsService extends IService<OutgoingsDo> {
 
     void add(OutgoingsUpdateVo updateVo);
 
+    OutgoingsEditInfoDto getEditInfo(Long id);
+
     void edit(OutgoingsUpdateVo updateVo);
 
     void del(Long[] ids);
 
     OutgoingsPredictVo predictTag(OutgoingsPredictReqVo reqVo);
 
-    Set<String> getTagOptions(Integer type);
+    Set<String> getTagOptions(List<Integer> types);
 
     List<OutgoingsDayDto> listByDay(OutgoingsQueryVo queryVo);
 

@@ -20,4 +20,5 @@ public class OutgoingsTagVo {
 
     private BigDecimal amount;
 
+    private Integer type;
 }

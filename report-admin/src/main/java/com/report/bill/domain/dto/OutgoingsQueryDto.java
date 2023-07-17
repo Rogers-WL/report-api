@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author: rogers
@@ -14,7 +15,7 @@ public class OutgoingsQueryDto {
 
     private BigDecimal amount;
 
-    private Integer type;
+    private List<Integer> type;
 
     private String doTime;
 
@@ -36,4 +37,5 @@ public class OutgoingsQueryDto {
 
     private String orderString;
 
+    private String eqTag;
 }

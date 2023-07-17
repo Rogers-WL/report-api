@@ -7,13 +7,16 @@
         from bill_outgoings t
         <where>
             <if test="type != null">
-              and  t.type = #{type}
+              and  t.type  in
+                <foreach item="item" index="index" collection="type" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
             <if test="tag != null and tag != ''">
                 and find_in_set(#{tag}, t.tag)
             </if>
             <if test="key != null and key != ''">
-                and t.remark like  concat('%', #{key}, '')
+                and t.remark like  concat('%', #{key}, '%')
             </if>
             <if test="isNecessary != null">
                 and t.is_necessary = #{isNecessary}
@@ -29,6 +32,9 @@
             </if>
             <if test="timeEnd != null and timeEnd != ''">
                 and #{timeEnd} &gt;= date_format(t.do_time, '%Y%m%d')
+            </if>
+            <if test="eqTag != null and eqTag != ''">
+                and t.tag = #{eqTag}
             </if>
         </where>
         order by
@@ -47,7 +53,10 @@
         from bill_outgoings t
         <where>
             <if test="type != null">
-                and  t.type = #{type}
+                and t.type in
+                <foreach item="item" index="index" collection="type" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
             <if test="tag != null and tag != ''">
                 and find_in_set(#{tag}, t.tag)
@@ -76,8 +85,11 @@
 
     <select id="getSameBill" resultType="com.report.bill.domain.entity.OutgoingsDo">
         select t.* from bill_outgoings t
-        where t.type = #{type} and t.amount =  #{amount}
-            and #{doTime} = date_format(t.do_time, '%H%i')
+        where t.type in
+        <foreach item="item" index="index" collection="type" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and t.amount =  #{amount} and #{doTime} = date_format(t.do_time, '%H%i')
         order by t.do_time desc
         limit 1
     </select>
@@ -85,7 +97,10 @@
     <select id="getMostSimilarBill" resultType="com.report.bill.domain.entity.OutgoingsDo">
         select t.*
         from bill_outgoings t
-        where t.type = #{type}
+        where t.type in
+        <foreach item="item" index="index" collection="type" open="(" separator="," close=")">
+            #{item}
+        </foreach>
         <if test="amountLow != null">
             and t.amount &gt;= #{amountLow}
         </if>
@@ -103,7 +118,10 @@
         from bill_outgoings t
         <where>
             <if test="type != null">
-                and t.type = #{type}
+                and t.type  in
+                <foreach item="item" index="index" collection="type" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
             <if test="timeStart != null and timeStart != ''">
                 and #{timeStart} &lt;= date_format(t.do_time, '%Y%m%d')
@@ -128,9 +146,6 @@
         select t.type, count(*) as times, sum(amount) as amount
         from bill_outgoings t
         <where>
-            <if test="key != null and key != ''">
-               and t.tag like concat('%', #{key}, '%')
-            </if>
             <if test="timeStart != null and timeStart != ''">
                 and #{timeStart} &lt;= date_format(t.do_time, '%Y%m%d')
             </if>
@@ -146,9 +161,6 @@
         select t.tag, t.type,  count(*) as times, sum(amount) as amount
         from bill_outgoings t
         <where>
-            <if test="key != null and key != ''">
-                and t.tag like concat('%', #{key}, '%')
-            </if>
             <if test="timeStart != null and timeStart != ''">
                 and #{timeStart} &lt;= date_format(t.do_time, '%Y%m%d')
             </if>

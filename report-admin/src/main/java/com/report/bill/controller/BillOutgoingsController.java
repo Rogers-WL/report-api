@@ -2,13 +2,13 @@ package com.report.bill.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.report.bill.domain.dto.OutgoingsDayDto;
+import com.report.bill.domain.dto.OutgoingsEditInfoDto;
 import com.report.bill.domain.dto.OutgoingsTagDto;
 import com.report.bill.domain.entity.OutgoingsDo;
 import com.report.bill.domain.vo.outgoings.req.OutgoingsPredictReqVo;
 import com.report.bill.domain.vo.outgoings.req.OutgoingsQueryVo;
 import com.report.bill.domain.vo.outgoings.req.OutgoingsUpdateVo;
 import com.report.bill.domain.vo.outgoings.resp.OutgoingsDayVo;
-import com.report.bill.domain.vo.outgoings.resp.OutgoingsTagVo;
 import com.report.bill.domain.vo.outgoings.resp.OutgoingsVo;
 import com.report.bill.mapstruct.BillOutgoingsMapstruct;
 import com.report.bill.service.IBillOutgoingsService;
@@ -70,21 +70,25 @@ public class BillOutgoingsController extends BaseController {
     @GetMapping("/list/tag")
     public R listByTag(OutgoingsQueryVo queryVo) {
         List<OutgoingsTagDto> list = service.listByTag(queryVo);
-        List<OutgoingsTagVo> voList = mapstruct.listTagDtoToVo(list);
-        return R.success(voList);
+        return R.success(mapstruct.listTagDtoToVo(list));
     }
 
     @GetMapping("/detail/{id}")
     public R getDetail(@PathVariable Long id) {
         OutgoingsDo outgoingsDo = service.getDetail(id);
-        OutgoingsVo vo = mapstruct.doToVo(outgoingsDo);
-        return R.success(vo);
+        return R.success(mapstruct.doToVo(outgoingsDo));
     }
 
     @PostMapping
     public R add(@RequestBody @Validated OutgoingsUpdateVo updateVo) {
         service.add(updateVo);
         return R.success();
+    }
+
+    @GetMapping("/edit/{id}")
+    public R getEditInfo(@PathVariable Long id) {
+        OutgoingsEditInfoDto dto = service.getEditInfo(id);
+        return R.success(mapstruct.editInfoDtoToVo(dto));
     }
 
     @PutMapping
@@ -108,7 +112,7 @@ public class BillOutgoingsController extends BaseController {
     }
 
     @GetMapping("/options/tag/{type}")
-    public R getTagOptions(@PathVariable Integer type) {
+    public R getTagOptions(@PathVariable List<Integer> type) {
         return R.success(service.getTagOptions(type));
     }
 

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.report.bill.domain.BillConstant;
 import com.report.bill.domain.bo.OutgoingStatisticsBo;
 import com.report.bill.domain.dto.OutgoingsDayDto;
+import com.report.bill.domain.dto.OutgoingsEditInfoDto;
 import com.report.bill.domain.dto.OutgoingsQueryDto;
 import com.report.bill.domain.dto.OutgoingsTagDto;
 import com.report.bill.domain.entity.OutgoingsDo;
@@ -63,8 +64,16 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
         String dayOfWeek = updateVo.getDoTime().getDayOfWeek().name();
         outgoingsDo.setTag(String.join(",", updateVo.getTag()))
                 .setTypeName(DictUtils.getDictLabel(BillConstant.OUTGOINGS_TYPE_DICT, updateVo.getType().toString()))
-                .setWeekday(dayOfWeek.charAt(0)  + dayOfWeek.toLowerCase().substring(1).toLowerCase());
+                .setWeekday(dayOfWeek.charAt(0) + dayOfWeek.toLowerCase().substring(1).toLowerCase());
         save(outgoingsDo);
+    }
+
+    @Override
+    public OutgoingsEditInfoDto getEditInfo(Long id) {
+        OutgoingsDo outgoingsDo = getById(id);
+        OutgoingsEditInfoDto dto = mapstruct.editInfoDoToDto(outgoingsDo);
+        dto.setTagOption(getTagOptions(Collections.singletonList(dto.getType())));
+        return dto;
     }
 
     @Override
@@ -73,7 +82,7 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
         String dayOfWeek = updateVo.getDoTime().getDayOfWeek().name();
         outgoingsDo.setTag(String.join(",", updateVo.getTag()))
                 .setTypeName(DictUtils.getDictLabel(BillConstant.OUTGOINGS_TYPE_DICT, updateVo.getType().toString()))
-                .setWeekday(dayOfWeek.charAt(0)  + dayOfWeek.toLowerCase().substring(1).toLowerCase());
+                .setWeekday(dayOfWeek.charAt(0) + dayOfWeek.toLowerCase().substring(1).toLowerCase());
         updateById(outgoingsDo);
     }
 
@@ -90,54 +99,52 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
 
     @Override
     public OutgoingsPredictVo predictTag(OutgoingsPredictReqVo reqVo) {
-        String doTimeType = BillConstant.DAY_TYPE_WORKDAY;
+        String doTimeType = BillConstant.DOTIME_TYPE_WORKDAY;
         DayOfWeek dayOfWeek = reqVo.getDoTime().getDayOfWeek();
         if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-            doTimeType = BillConstant.DAY_TYPE_WEEKEND;
+            doTimeType = BillConstant.DOTIME_TYPE_WEEKEND;
         }
 
         OutgoingsPredictVo predictVo = new OutgoingsPredictVo()
-                .setDoTimeTypeOption(BillConstant.DAY_TYPE_OPTION)
-                .setTagOption(getTagOptions(reqVo.getType()));
-        // 新增时预测 tag doTimeType  isNecessary
-        if (reqVo.getId() == null) {
-            predictVo.setDoTimeType(doTimeType);
-
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
-            OutgoingsQueryDto queryDto = mapstruct.predictReqVoToQueryDto(reqVo);
-            queryDto.setDoTimeType(doTimeType)
-                    .setDoTime(reqVo.getDoTime().format(timeFormatter));
-            OutgoingsDo sameBill = mapper.getSameBill(queryDto);
+                .setTagOption(getTagOptions(Collections.singletonList(reqVo.getType())))
+                .setDoTimeType(doTimeType);
+        // 预测tag
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
+        OutgoingsQueryDto queryDto = new OutgoingsQueryDto()
+                .setAmount(reqVo.getAmount())
+                .setType(Collections.singletonList(reqVo.getType()))
+                .setDoTimeType(doTimeType)
+                .setDoTime(reqVo.getDoTime().format(timeFormatter));
+        OutgoingsDo sameBill = mapper.getSameBill(queryDto);
+        if (sameBill == null) {
+            BigDecimal amountFloat = BigDecimal.valueOf(50);
+            int timeFloat = 2;
+            if (reqVo.getType() == BillConstant.OUTGOINGS_TYPE_CAR) {
+                amountFloat = BigDecimal.valueOf(200);
+                timeFloat = 8;
+            }
+            queryDto.setAmountLow(reqVo.getAmount().subtract(amountFloat))
+                    .setAmountHigh(reqVo.getAmount().add(amountFloat))
+                    .setTimeStart(reqVo.getDoTime().minusHours(timeFloat).format(timeFormatter))
+                    .setTimeEnd(reqVo.getDoTime().plusHours(timeFloat).format(timeFormatter));
+            sameBill = mapper.getMostSimilarBill(queryDto);
             if (sameBill == null) {
-                BigDecimal amountFloat = BigDecimal.valueOf(50);
-                int timeFloat = 2;
-                if (reqVo.getType() == BillConstant.OUTGOINGS_TYPE_CAR) {
-                    amountFloat = BigDecimal.valueOf(200);
-                    timeFloat = 8;
-                }
-                queryDto.setAmountLow(reqVo.getAmount().subtract(amountFloat))
-                        .setAmountHigh(reqVo.getAmount().add(amountFloat))
-                        .setTimeStart(reqVo.getDoTime().minusHours(timeFloat).format(timeFormatter))
-                        .setTimeEnd(reqVo.getDoTime().plusHours(timeFloat).format(timeFormatter));
+                queryDto.setAmountLow(null)
+                        .setAmountHigh(null);
                 sameBill = mapper.getMostSimilarBill(queryDto);
-                if (sameBill == null) {
-                    queryDto.setAmountLow(null)
-                            .setAmountHigh(null);
-                    sameBill = mapper.getMostSimilarBill(queryDto);
-                }
             }
-            if (sameBill != null) {
-                predictVo.setTag(Arrays.asList(sameBill.getTag().split(",")))
-                        .setIsNecessary(Optional.ofNullable(sameBill.getIsNecessary()).orElse(true));
-            }
+        }
+        if (sameBill != null) {
+            predictVo.setTag(Arrays.asList(sameBill.getTag().split(",")))
+                    .setIsNecessary(Optional.ofNullable(sameBill.getIsNecessary()).orElse(true));
         }
         return predictVo;
     }
 
     @Override
-    public Set<String> getTagOptions(Integer type) {
+    public Set<String> getTagOptions(List<Integer> types) {
         List<Object> tagList = listObjs(new QueryWrapper<OutgoingsDo>().select("distinct tag")
-                .lambda().eq(OutgoingsDo::getType, type));
+                .lambda().in(OutgoingsDo::getType, types));
         Set<String> tagSet = new HashSet<>();
         tagList.forEach(t -> tagSet.addAll(Arrays.asList(t.toString().split(","))));
         return tagSet;
@@ -151,7 +158,7 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
         }
         //查询详情
         String day1 = dayList.get(0).getDay().replace("-", "");
-        String day2 = dayList.get(dayList.size() -1).getDay().replace("-", "");
+        String day2 = dayList.get(dayList.size() - 1).getDay().replace("-", "");
         OutgoingsQueryDto queryDto = new OutgoingsQueryDto().setTimeStart(day1).setTimeEnd(day2);
         if (day1.compareTo(day2) > 0) {
             queryDto.setTimeStart(day2).setTimeEnd(day1);
@@ -160,8 +167,8 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
         queryDto.setOrderString("do_time asc");
         List<OutgoingsDo> detailList = mapper.getList(queryDto);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        dayList.forEach(d-> d.setDetails(detailList.stream().filter(e-> e.getDoTime().format(formatter).equals(d.getDay()))
-                .map(e-> new OutgoingStatisticsBo().setAmount(e.getAmount()).setName(e.getTag()))
+        dayList.forEach(d -> d.setDetails(detailList.stream().filter(e -> e.getDoTime().format(formatter).equals(d.getDay()))
+                .map(e -> new OutgoingStatisticsBo().setAmount(e.getAmount()).setName(e.getTag()))
                 .collect(Collectors.toList())));
         return dayList;
     }
@@ -172,11 +179,11 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
         List<OutgoingsTagDto> typeList = mapper.getListByType(queryDto);
         List<OutgoingsTagDto> tagList = mapper.getListByTag(queryDto);
         AtomicInteger id = new AtomicInteger(1);
-        typeList.forEach(t->{
+        typeList.forEach(t -> {
             t.setPid(0);
             t.setId(id.getAndIncrement());
             t.setTag(DictUtils.getDictLabel(BillConstant.OUTGOINGS_TYPE_DICT, t.getType().toString()));
-            tagList.forEach(a->{
+            tagList.forEach(a -> {
                 if (a.getType().intValue() == t.getType()) {
                     a.setPid(t.getId());
                     a.setId(id.getAndIncrement());
