@@ -12,7 +12,6 @@ import com.report.bill.domain.vo.outgoings.resp.OutgoingsDayVo;
 import com.report.bill.domain.vo.outgoings.resp.OutgoingsVo;
 import com.report.bill.mapstruct.BillOutgoingsMapstruct;
 import com.report.bill.service.IBillOutgoingsService;
-import com.report.common.constant.HttpStatus;
 import com.report.common.core.controller.BaseController;
 import com.report.common.core.domain.R;
 import com.report.common.core.page.TableDataInfo;
@@ -43,9 +42,7 @@ public class BillOutgoingsController extends BaseController {
         List<OutgoingsDo> list = service.list(queryVo);
         List<OutgoingsVo> voList = mapstruct.listDoToVo(list);
 
-        TableSumDataInfo rspData = new TableSumDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
+        TableSumDataInfo rspData =  TableSumDataInfo.success();
         rspData.setRows(voList);
         rspData.setTotal(new PageInfo(list).getTotal());
         rspData.setAmountSum(service.getAmountSum(queryVo));
@@ -58,9 +55,7 @@ public class BillOutgoingsController extends BaseController {
         List<OutgoingsDayDto> list = service.listByDay(queryVo);
         List<OutgoingsDayVo> voList = mapstruct.listDayDtoToVo(list);
 
-        TableSumDataInfo rspData = new TableSumDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
+        TableSumDataInfo rspData = TableSumDataInfo.success();
         rspData.setRows(voList);
         rspData.setTotal(new PageInfo(list).getTotal());
         rspData.setAmountSum(service.getAmountSum(queryVo));

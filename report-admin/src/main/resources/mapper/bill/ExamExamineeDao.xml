@@ -170,4 +170,10 @@
         </where>
         group by t.tag, t.type
     </select>
+
+    <select id="getDayList" resultType="java.lang.String">
+        select distinct date_format(t.do_time, '%Y-%m-%d') day
+        from bill_outgoings t
+        order by day desc
+    </select>
 </mapper>

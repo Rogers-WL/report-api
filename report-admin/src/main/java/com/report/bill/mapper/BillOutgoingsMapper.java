@@ -27,4 +27,6 @@ public interface BillOutgoingsMapper extends BaseMapper<OutgoingsDo> {
     List<OutgoingsTagDto> getListByType(OutgoingsQueryDto queryDto);
 
     List<OutgoingsTagDto> getListByTag(OutgoingsQueryDto queryDto);
+
+    List<String> getDayList();
 }

@@ -20,7 +20,10 @@ public class OutgoingsVo {
 
     private Integer type;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDateTime doDate;
+
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private LocalDateTime doTime;
 
     private String doTimeType;

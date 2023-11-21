@@ -205,7 +205,8 @@ public class BillOutgoingsServiceImpl extends ServiceImpl<BillOutgoingsMapper, O
         // 处理排序
         if (queryVo.getOrder() != null) {
             Map<String, String> orderMap = queryVo.getOrder();
-            String order = orderMap.entrySet().stream().filter(e -> e.getValue() != null).map(e -> e.getKey() + " " + e.getValue()).collect(Collectors.joining(","));
+            String order = orderMap.entrySet().stream().filter(e -> e.getValue() != null).map(e -> e.getKey() + " " + e.getValue())
+                    .collect(Collectors.joining(","));
             queryDto.setOrderString(order);
         }
         return queryDto;

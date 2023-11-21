@@ -27,6 +27,7 @@ public interface BillOutgoingsMapstruct {
 
     OutgoingsQueryDto queryVoToDto(OutgoingsQueryVo queryVo);
 
+    @Mapping(target = "doDate", source = "doTime")
     OutgoingsVo doToVo(OutgoingsDo outgoingsDo);
 
     List<OutgoingsVo> listDoToVo(List<OutgoingsDo> doList);

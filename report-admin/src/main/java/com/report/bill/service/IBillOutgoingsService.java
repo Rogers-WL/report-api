@@ -40,4 +40,5 @@ public interface IBillOutgoingsService extends IService<OutgoingsDo> {
     List<OutgoingsDayDto> listByDay(OutgoingsQueryVo queryVo);
 
     List<OutgoingsTagDto> listByTag(OutgoingsQueryVo queryVo);
+
 }
