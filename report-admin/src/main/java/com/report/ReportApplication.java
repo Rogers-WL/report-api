@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @author rogers
  */
 @MapperScan(value = {"com.report.**.mapper"})
-// (scanBasePackages = {"com.report"})
 @SpringBootApplication (scanBasePackages = {"com.report"})
 @EnableScheduling
 public class ReportApplication {
